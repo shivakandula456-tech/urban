@@ -1,0 +1,276 @@
+/* =============================================================================
+   responsive.css — fluid adaptation across the full viewport range.
+   The layout is built with min()/max()/clamp()/minmax() first; these queries
+   only re-architect where the *structure* has to change (navigation, columns,
+   density, ultrawide containment). Tested widths:
+   320 · 360 · 375 · 390 · 414 · 430 · 768 · 820 · 834 · 1024 · 1100 · 1180 ·
+   1240 · 1280 · 1320 · 1366 · 1440 · 1480 · 1560 · 1600 · 1680 · 1760 · 1840 ·
+   1920 · 2000 · 2200 · 2400 · 2560 · 2800 · 3200 · 3440
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   LARGE DESKTOP / ULTRAWIDE — keep content composed, never stretched
+   ------------------------------------------------------------------------ */
+@media (min-width: 1600px) {
+    :root { --header-h: 86px; }
+    .hero-inner { max-width: min(100%, 860px); }
+    .service-grid { grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); }
+}
+
+@media (min-width: 2200px) {
+    :root {
+        --container: min(100% - 6rem, 1400px);
+        --container-wide: min(100% - 6rem, 1660px);
+        --fs-hero: clamp(4rem, 3rem + 2.4vw, 8rem);
+    }
+    .hero-inner { max-width: min(100%, 940px); }
+    .service-grid { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+    .bk-services { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+    .gallery-grid { grid-auto-rows: clamp(230px, 14vw, 320px); }
+}
+
+/* Ultrawide: never let prose or the wizard run the full width */
+@media (min-width: 1800px) {
+    .prose, .faq, .lead { max-width: 76ch; }
+    .bk-panel > .bk-head { max-width: 74ch; }
+    .final-cta p, .handoff p { max-width: 58ch; }
+    .service-detail { grid-template-columns: minmax(0, 780px) minmax(0, 440px); justify-content: center; }
+    .booking-shell { max-width: 1320px; margin-inline: auto; }
+}
+
+@media (min-width: 3000px) {
+    :root {
+        --container: min(100% - 8rem, 1460px);
+        --container-wide: min(100% - 8rem, 1720px);
+    }
+    .footer-wordmark { font-size: clamp(4rem, 8vw, 13rem); }
+}
+
+/* ---------------------------------------------------------------------------
+   COMPACT DESKTOP — protect nav spacing before it collapses
+   ------------------------------------------------------------------------ */
+@media (max-width: 1240px) {
+    .main-nav ul { gap: clamp(.5rem, 1vw, 1rem); }
+    .main-nav a { letter-spacing: .1em; font-size: .73rem; }
+    .header-phone { display: none; }
+    .header-cta .btn { padding: .85em 1.4em; }
+}
+
+@media (max-width: 1040px) {
+    .main-nav { display: none; }
+    .nav-toggle { display: flex; }
+    .header-cta { margin-left: auto; }
+    .split { gap: clamp(1.75rem, 4vw, 3rem); }
+    .service-detail { grid-template-columns: minmax(0, 1fr); }
+    .detail-panel { position: static; }
+    .step::after { display: none; }
+}
+
+/* Full-width containers when the drawer takes over */
+@media (max-width: 900px) {
+    .progress { display: none !important; }
+    .progress-mobile { display: flex; }
+    .review-row { grid-template-columns: minmax(0, 1fr); gap: .3rem; }
+    .review-row dd { font-size: var(--fs-base); }
+    .footer-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); }
+    .footer-brand { grid-column: 1 / -1; }
+    .stat { border-inline: 0; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+    .stat:last-child { border-bottom: 0; }
+    .trust-item:not(:last-child)::after { display: none; }
+    .trust-strip ul { gap: 1.4rem 1rem; }
+}
+
+@media (min-width: 901px) {
+    .progress { display: block; }
+    .progress-mobile { display: none; }
+    .booking-shell { grid-template-columns: minmax(0, 1fr) minmax(280px, 330px); }
+}
+
+/* ---------------------------------------------------------------------------
+   TABLET
+   ------------------------------------------------------------------------ */
+@media (max-width: 860px) {
+    body { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+    .sticky-bar { display: flex; }
+
+    .hero { min-height: auto; padding-top: calc(var(--header-h) + clamp(4rem, 18vw, 8rem)); }
+    .hero-media img,
+    .hero-media video { object-position: 66% 40%; }
+    .hero::before {
+        background:
+            linear-gradient(180deg, rgba(11, 13, 12, .72) 0%, rgba(11, 13, 12, .5) 34%, rgba(11, 13, 12, .95) 82%),
+            linear-gradient(90deg, rgba(11, 13, 12, .82), rgba(11, 13, 12, .35));
+    }
+    .hero-scroll { display: none; }
+
+    .promo { min-height: clamp(340px, 62vw, 460px); }
+    .promo::before { background: linear-gradient(160deg, rgba(11, 13, 12, .94) 12%, rgba(11, 13, 12, .74) 62%, rgba(23, 60, 50, .7)); }
+
+    .filter-bar {
+        width: 100%;
+        border-radius: var(--radius);
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 760px) {
+    :root { --radius: 16px; --radius-lg: 20px; }
+
+    .section-head { margin-bottom: var(--sp-4); }
+    .hero-trust { gap: .7rem 1.2rem; }
+    .hero-trust li { font-size: .66rem; letter-spacing: .08em; }
+
+    .bk-nav {
+        position: sticky;
+        bottom: calc(66px + env(safe-area-inset-bottom));
+        z-index: 60;
+        margin-top: var(--sp-4);
+        padding: .75rem;
+        margin-inline: -.4rem;
+        background: rgba(11, 13, 12, .96);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+    }
+    .bk-nav .btn { flex: 1 1 auto; }
+
+    .gallery-item[data-span="wide"],
+    .gallery-item[data-span="tall"] { grid-column: auto; grid-row: auto; }
+    .gallery-grid { grid-auto-rows: clamp(160px, 44vw, 260px); }
+
+    .time-chip { flex: 1 1 calc(33.333% - .55rem); min-width: 0; }
+    .date-pill { flex: 1 1 calc(25% - .6rem); min-width: 0; }
+
+    .lightbox-nav.prev { left: .4rem; }
+    .lightbox-nav.next { right: .4rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------------------ */
+@media (max-width: 620px) {
+    :root { --container: min(100% - 1.75rem, 1320px); --container-wide: min(100% - 1.75rem, 1560px); }
+
+    .btn { width: 100%; }
+    .btn-row { flex-direction: column; align-items: stretch; }
+    .btn-row .btn { width: 100%; }
+    .service-actions { flex-direction: column; }
+    .service-actions .btn { width: 100%; }
+    .form-actions { flex-direction: column; align-items: stretch; }
+    .form-actions .btn { width: 100%; }
+
+    .header-cta .btn { min-height: 44px; padding: .8em 1.05em; font-size: .66rem; letter-spacing: .1em; }
+
+    .hero-inner { max-width: 100%; margin-left: auto; width: var(--container); }
+    .hero-title .line-2 { letter-spacing: .2em; font-size: .78rem; }
+    .hero-trust { flex-direction: column; gap: .6rem; align-items: flex-start; }
+
+    .service-grid,
+    .bk-services,
+    .grid-4,
+    .grid-3 { grid-template-columns: minmax(0, 1fr); }
+
+    .grid-2 { grid-template-columns: minmax(0, 1fr); }
+
+    .bk-service { grid-template-columns: 80px minmax(0, 1fr); }
+    .bk-service .bk-thumb { width: 80px; height: 72px; }
+
+    .duration-line { flex-wrap: wrap; gap: .35rem 1rem; }
+    .bk-date-native .field,
+    .bk-custom-time .field { max-width: 100%; width: 100%; }
+
+    .time-chip { flex: 1 1 calc(50% - .55rem); }
+    .date-pill { flex: 1 1 calc(33.333% - .6rem); }
+
+    .media-badge { left: .75rem; right: .75rem; bottom: .75rem; }
+
+    .footer-wordmark { font-size: clamp(2rem, 13vw, 4.5rem); -webkit-text-stroke-width: .8px; }
+
+    .faq-q { font-size: var(--fs-base); }
+
+    .mobile-nav .m-link { font-size: clamp(1.5rem, 6vw, 2rem); }
+}
+
+/* ---------------------------------------------------------------------------
+   VERY SMALL PHONES (320 – 360)
+   ------------------------------------------------------------------------ */
+@media (max-width: 400px) {
+    .brand-text { max-width: 40vw; }
+    .brand-name { font-size: .98rem; letter-spacing: .04em; }
+    .brand-sub { font-size: .46rem; letter-spacing: .2em; }
+    .header-cta .btn span.btn-label { display: none; }
+    .header-cta .btn { padding: .8em .95em; }
+    .date-pill { flex: 1 1 calc(50% - .6rem); }
+    .time-chip { min-width: 0; font-size: .86rem; }
+    .filter-btn { padding: .65em 1.05em; letter-spacing: .1em; }
+    .stat b { font-size: 2rem; }
+}
+
+@media (max-width: 359px) {
+    :root { --container: min(100% - 1.25rem, 1320px); --container-wide: min(100% - 1.25rem, 1560px); }
+    .header-cta .btn { display: none; }          /* still reachable via hamburger + sticky bar */
+    .bk-service { grid-template-columns: minmax(0, 1fr); }
+    .bk-service .bk-thumb { width: 100%; height: 130px; }
+}
+
+/* ---------------------------------------------------------------------------
+   SHORT / LANDSCAPE VIEWPORTS — never crop the hero, never trap content
+   ------------------------------------------------------------------------ */
+@media (max-height: 640px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding-top: calc(var(--header-h) + 2rem);
+        padding-bottom: 3rem;
+    }
+    .hero-scroll { display: none; }
+    .detail-panel { position: static; }
+    .bk-summary { position: static; }
+}
+
+@media (max-height: 700px) and (min-width: 901px) {
+    .detail-panel, .bk-summary { position: static; }
+}
+
+/* Mobile in portrait with very little height: keep the hero compact */
+@media (max-height: 620px) and (orientation: portrait) {
+    .hero { padding-top: calc(var(--header-h) + 2.5rem); padding-bottom: 2.5rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   POINTER / INPUT MODALITIES
+   ------------------------------------------------------------------------ */
+@media (hover: none) {
+    .btn:hover { transform: none; box-shadow: none; }
+    .service-card:hover { transform: none; box-shadow: none; }
+    .service-card:hover .service-media img { transform: none; }
+    .feature:hover { transform: none; }
+    .bk-service:hover, .bk-location:hover { transform: none; }
+    .gallery-item:hover img { transform: none; filter: brightness(1); }
+    .main-nav a:hover::after { transform: scaleX(0); }
+
+    /* never rely on hover for essential info */
+    .gallery-item::after { opacity: 1; background: linear-gradient(180deg, transparent 55%, rgba(11, 13, 12, .55)); }
+}
+
+@media (pointer: coarse) {
+    .btn, .btn--sm { min-height: 50px; }
+    .chip, .filter-btn, .time-chip, .date-pill, .duration-line { min-height: 48px; }
+    .footer-col a, .footer-bottom a { display: inline-block; padding-block: .35rem; }
+    .main-nav a { padding-block: .9rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   PRINT
+   ------------------------------------------------------------------------ */
+@media print {
+    .site-header, .sticky-bar, .mobile-nav, .final-cta, .filter-bar,
+    .btn, .progress, .bk-nav, .toast-region, .site-footer .footer-wordmark { display: none !important; }
+    body { background: #fff; color: #111; padding: 0; }
+    .section, .page-hero { padding-block: 1rem; }
+}
