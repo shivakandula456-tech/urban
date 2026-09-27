@@ -1,0 +1,6 @@
+# Urban Man Ayurveda & Wellness Center
+User-agent: *
+Allow: /
+
+# Sitemap: add BUSINESS_CONFIG.siteUrl in js/config.js and re-run
+#          tools/build.py to publish the absolute sitemap URL.

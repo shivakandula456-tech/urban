@@ -1,0 +1,14 @@
+{
+  "name": "urbanman-site-qa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Optional jsdom-based runtime and flow QA for the Urban Man site.",
+  "scripts": {
+    "qa:runtime": "node qa_runtime.js",
+    "qa:flows": "node qa_flows.js",
+    "qa:file": "node qa_file.js"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.1"
+  }
+}

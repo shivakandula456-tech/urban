@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO (CLIENT TO CONFIRM): set BUSINESS_CONFIG.siteUrl in js/config.js
+     and re-run `python tools/build.py`. The sitemap protocol requires
+     absolute URLs, and no production domain is ever invented here. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>
