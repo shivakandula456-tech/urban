@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Urban Man">
+  <path d="M32 6C20.5 15 15 25.5 15 34.5c0 9.6 7.4 17.5 17 17.5s17-7.9 17-17.5C49 25.5 43.5 15 32 6Z"
+        fill="none" stroke="#C6A15B" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M32 12v40" stroke="#C6A15B" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M32 27.5 42.5 35M32 37.5 21.5 45" stroke="#D8C28A" stroke-width="2.6" stroke-linecap="round"/>
+</svg>
