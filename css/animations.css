@@ -1,0 +1,140 @@
+/* =============================================================================
+   animations.css — restrained, premium motion.
+   Every effect is opt-in via [data-reveal] and is fully disabled when the
+   visitor asks for reduced motion. Nothing loops, nothing parallaxes.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal
+   ------------------------------------------------------------------------ */
+[data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    transition:
+        opacity .75s var(--ease),
+        transform .75s var(--ease);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+[data-reveal="fade"] { transform: none; }
+[data-reveal="left"] { transform: translate3d(-30px, 0, 0); }
+[data-reveal="right"] { transform: translate3d(30px, 0, 0); }
+[data-reveal="zoom"] { transform: scale(.965); }
+
+[data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+}
+
+/* Content must never be permanently hidden if JS fails */
+.no-js [data-reveal],
+html:not(.js) [data-reveal] { opacity: 1; transform: none; }
+
+/* ---------------------------------------------------------------------------
+   Image reveal (mask wipe)
+   ------------------------------------------------------------------------ */
+.img-reveal { position: relative; overflow: hidden; }
+
+.img-reveal img {
+    transform: scale(1.06);
+    transition: transform 1.1s var(--ease);
+}
+
+.img-reveal.is-revealed img { transform: scale(1); }
+
+.img-reveal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--forest-deep);
+    transform-origin: right;
+    transition: transform .9s var(--ease);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.img-reveal.is-revealed::after { transform: scaleX(0); }
+html:not(.js) .img-reveal::after,
+.no-js .img-reveal::after { display: none; }
+
+/* ---------------------------------------------------------------------------
+   Hero entrance
+   ------------------------------------------------------------------------ */
+.hero-rise {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    animation: heroRise .95s var(--ease) forwards;
+    animation-delay: var(--rise-delay, 0ms);
+}
+
+html:not(.js) .hero-rise { opacity: 1; transform: none; animation: none; }
+
+/* ---------------------------------------------------------------------------
+   Subtle hover motion (existing component hooks)
+   ------------------------------------------------------------------------ */
+.zoom-img { overflow: hidden; }
+.zoom-img img { transition: transform .55s var(--ease); }
+.zoom-img:hover img { transform: scale(1.04); }
+
+/* Ken-burns on hero poster while video loads / when motion is allowed */
+.hero-media .kenburns {
+    animation: kenburns 26s var(--ease) infinite alternate;
+}
+
+/* ---------------------------------------------------------------------------
+   Keyframes
+   ------------------------------------------------------------------------ */
+@keyframes heroRise {
+    from { opacity: 0; transform: translate3d(0, 22px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes bkIn {
+    from { opacity: 0; transform: translate3d(0, 14px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kenburns {
+    from { transform: scale(1); }
+    to   { transform: scale(1.07); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulseGold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(198, 161, 91, .45); }
+    50%      { box-shadow: 0 0 0 8px rgba(198, 161, 91, 0); }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION — remove all non-essential movement
+   ------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    [data-reveal] { opacity: 1 !important; transform: none !important; }
+    .img-reveal::after { display: none; }
+    .img-reveal img { transform: none !important; }
+    .hero-rise { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .hero-media .kenburns { animation: none !important; }
+    .service-card:hover .service-media img { transform: none; }
+    .gallery-item:hover img { transform: none; }
+    .btn:hover { transform: none; }
+}
